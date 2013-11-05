@@ -47,19 +47,22 @@ interface SessionInterface
     public function deleteSession($clientId, $ownerType, $ownerId);
 
     /**
-     * Associate a redirect URI with a session
+     * Assocate an authorization code with a session
      *
      * Example SQL query:
      *
      * <code>
-     * INSERT INTO oauth_session_redirects (session_id, redirect_uri) VALUE (:sessionId, :redirectUri)
+     * INSERT INTO oauth_session_authcodes (session_id, auth_code, auth_code_expires)
+     *  VALUE (:sessionId, :authCode, :authCodeExpires)
      * </code>
      *
      * @param  int    $sessionId   The session ID
+     * @param  string $authCode    The authorization code
      * @param  string $redirectUri The redirect URI
-     * @return void
+     * @param  int    $expireTime  Unix timestamp of the access token expiry time
+     * @return int                 The auth code ID
      */
-    public function associateRedirectUri($sessionId, $redirectUri);
+    public function associateAuthCode($sessionId, $authCode, $redirectUri, $expireTime);
 
     /**
      * Associate an access token with a session
@@ -95,23 +98,6 @@ interface SessionInterface
      * @return void
      */
     public function associateRefreshToken($accessTokenId, $refreshToken, $expireTime, $clientId);
-
-    /**
-     * Assocate an authorization code with a session
-     *
-     * Example SQL query:
-     *
-     * <code>
-     * INSERT INTO oauth_session_authcodes (session_id, auth_code, auth_code_expires)
-     *  VALUE (:sessionId, :authCode, :authCodeExpires)
-     * </code>
-     *
-     * @param  int    $sessionId  The session ID
-     * @param  string $authCode   The authorization code
-     * @param  int    $expireTime Unix timestamp of the access token expiry time
-     * @return int                The auth code ID
-     */
-    public function associateAuthCode($sessionId, $authCode, $expireTime);
 
     /**
      * Remove an associated authorization token from a session
