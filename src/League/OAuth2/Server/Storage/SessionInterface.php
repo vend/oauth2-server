@@ -31,20 +31,20 @@ interface SessionInterface
     public function createSession($clientId, $ownerType, $ownerId);
 
     /**
-     * Delete a session
+     * Get a session
      *
      * Example SQL query:
      *
      * <code>
-     * DELETE FROM oauth_sessions WHERE client_id = :clientId AND owner_type = :type AND owner_id = :typeId
+     * SELECT * FROM oauth_sessions WHERE client_id = :clientId AND owner_type = :type AND owner_id = :typeId
      * </code>
      *
      * @param  string $clientId  The client ID
      * @param  string $ownerType The type of the session owner (e.g. "user")
      * @param  string $ownerId   The ID of the session owner (e.g. "123")
-     * @return void
+     * @return array
      */
-    public function deleteSession($clientId, $ownerType, $ownerId);
+    public function getSession($clientId, $ownerType, $ownerId);
 
     /**
      * Assocate an authorization code with a session
