@@ -19,15 +19,14 @@ interface SessionInterface
      * Example SQL query:
      *
      * <code>
-     * SELECT * FROM oauth_sessions WHERE client_id = :clientId AND owner_type = :type AND owner_id = :typeId
+     * SELECT * FROM oauth_sessions WHERE client_id = :clientId AND owner_id = :typeId
      * </code>
      *
      * @param  string $clientId  The client ID
-     * @param  string $ownerType The type of the session owner (e.g. "user")
      * @param  string $ownerId   The ID of the session owner (e.g. "123")
      * @return array
      */
-    public function getSession($clientId, $ownerType, $ownerId);
+    public function getSession($clientId, $ownerId);
 
     /**
      * Create a new session

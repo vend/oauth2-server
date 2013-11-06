@@ -58,7 +58,7 @@ class Implicit implements GrantTypeInterface {
     public function completeFlow($authParams = null)
     {
         // Get existing session
-        $session = $this->authServer->getStorage('session')->getSession($authParams['client_id'], 'user', $authParams['user_id']);
+        $session = $this->authServer->getStorage('session')->getSession($authParams['client_id'], $authParams['user_id']);
 
         // Create new session if one doesn't exist
         if (!$session) {

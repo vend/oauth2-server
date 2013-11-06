@@ -155,7 +155,7 @@ class AuthCode implements GrantTypeInterface {
         $authCode = SecureKey::make();
 
         // Get existing session
-        $session = $this->authServer->getStorage('session')->getSession($authParams['client_id'], $type, $typeId);
+        $session = $this->authServer->getStorage('session')->getSession($authParams['client_id'], $typeId);
 
         // Create new session if one doesn't exist
         if (!$session) {
