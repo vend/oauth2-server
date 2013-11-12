@@ -134,6 +134,16 @@ class Resource
     }
 
     /**
+     * Gets the session ID.
+     *
+     * @return string
+     */
+    public function getSessionId()
+    {
+        return $this->sessionId;
+    }
+
+    /**
      * Gets the access token owner ID.
      *
      * @return string
@@ -165,6 +175,7 @@ class Resource
 
     /**
      * Gets the client ID that created the session
+     *
      * @return string
      */
     public function getClientId()
@@ -205,6 +216,7 @@ class Resource
 
     /**
      * Get the session scopes
+     *
      * @return array
      */
     public function getScopes()
