@@ -258,7 +258,8 @@ class Resource
      */
     public function determineAccessToken($headersOnly = false)
     {
-        if ($header = $this->getRequest()->header('Authorization')) {
+        $header = $this->getRequest()->header('Authorization');
+        if ($header) {
             // Check for special case, because cURL sometimes does an
             // internal second request and doubles the authorization header,
             // which always resulted in an error.
@@ -271,7 +272,12 @@ class Resource
             } else {
                 $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s/', '', $header));
             }
-            $accessToken = ($accessToken === 'Bearer') ? '' : $accessToken;
+            // Check the header contains the keyword 'Bearer'
+            $required_keyword_present = strpos($header, 'Bearer');
+
+            // Set blank access token no token is given OR the required 'Bearer' keyword is not present in the header
+            $accessToken = ($accessToken === 'Bearer' || $required_keyword_present === false) ? '' : $accessToken;
+
         } elseif ($headersOnly === false) {
             $method = $this->getRequest()->server('REQUEST_METHOD');
             $accessToken = $this->getRequest()->{$method}($this->tokenKey);
