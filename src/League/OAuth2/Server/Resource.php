@@ -272,10 +272,10 @@ class Resource
             } else {
                 $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s/', '', $header));
             }
-            // Check the header contains the keyword 'Bearer'
+            // Check header contains the keyword 'Bearer'
             $required_keyword_present = strpos($header, 'Bearer');
 
-            // Set blank access token no token is given OR the required 'Bearer' keyword is not present in the header
+            // Set blank access token if no token is given OR the required 'Bearer' keyword is not present in the header
             $accessToken = ($accessToken === 'Bearer' || $required_keyword_present === false) ? '' : $accessToken;
 
         } elseif ($headersOnly === false) {
