@@ -278,7 +278,7 @@ class Resource
         }
 
         if (empty($accessToken)) {
-            throw new Exception\InvalidAccessTokenException('Access token is missing');
+            throw new Exception\MissingAccessTokenException('Access token is missing');
         }
 
         return $accessToken;
