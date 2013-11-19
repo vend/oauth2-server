@@ -54,6 +54,20 @@ class Request implements RequestInterface
         return $this->getPropertyValue('post', $index, $default);
     }
 
+    public function put($index = null, $default = null)
+    {
+        unset($index);
+
+        return $default;
+    }
+
+    public function delete($index = null, $default = null)
+    {
+        unset($index);
+
+        return $default;
+    }
+
     public function file($index = null, $default = null)
     {
         return $this->getPropertyValue('files', $index, $default);
