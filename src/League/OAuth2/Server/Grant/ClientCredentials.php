@@ -52,6 +52,7 @@ class ClientCredentials implements GrantTypeInterface {
 
     /**
      * Return the identifier
+     *
      * @return string
      */
     public function getIdentifier()
@@ -61,6 +62,7 @@ class ClientCredentials implements GrantTypeInterface {
 
     /**
      * Return the response type
+     *
      * @return string
      */
     public function getResponseType()
@@ -70,6 +72,7 @@ class ClientCredentials implements GrantTypeInterface {
 
     /**
      * Override the default access token expire time
+     *
      * @param int $accessTokenTTL
      * @return void
      */
@@ -80,6 +83,7 @@ class ClientCredentials implements GrantTypeInterface {
 
     /**
      * Complete the client credentials grant
+     * 
      * @param  null|array $inputParams
      * @return array
      */

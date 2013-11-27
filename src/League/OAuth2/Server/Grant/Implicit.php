@@ -52,6 +52,7 @@ class Implicit implements GrantTypeInterface {
 
     /**
      * Complete the client credentials grant
+     * 
      * @param  null|array $inputParams
      * @return array
      */

@@ -64,6 +64,7 @@ class RefreshToken implements GrantTypeInterface {
 
     /**
      * Set the TTL of the refresh token
+     *
      * @param int $refreshTokenTTL
      * @return void
      */
@@ -74,6 +75,7 @@ class RefreshToken implements GrantTypeInterface {
 
     /**
      * Get the TTL of the refresh token
+     *
      * @return int
      */
     public function getRefreshTokenTTL()
@@ -83,6 +85,7 @@ class RefreshToken implements GrantTypeInterface {
 
     /**
      * When a new access is token, expire the refresh token used and issue a new one.
+     *
      * @param  boolean $rotateRefreshTokens Set to true to enable (default = false)
      * @return void
      */
@@ -93,6 +96,7 @@ class RefreshToken implements GrantTypeInterface {
 
     /**
      * Complete the refresh token grant
+     * 
      * @param  null|array $inputParams
      * @return array
      */

@@ -18,6 +18,7 @@ class RedirectUri
 {
 	/**
 	 * Generate a new redirect uri
+     * 
 	 * @param  string $uri            The base URI
 	 * @param  array  $params         The query string parameters
 	 * @param  string $queryDelimeter The query string delimeter (default: "?")

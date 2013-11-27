@@ -1,6 +1,7 @@
 /vendor
 /composer.lock
 /tests/coverage
+/build
 /docs
 /testing
 /nbproject

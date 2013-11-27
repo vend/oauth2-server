@@ -236,6 +236,7 @@ class Authorization
 
     /**
      * Enable support for a grant
+     *
      * @param GrantTypeInterface $grantType  A grant class which conforms to Interface/GrantTypeInterface
      * @param null|string        $identifier An identifier for the grant (autodetected if not passed)
      */
@@ -257,6 +258,7 @@ class Authorization
 
     /**
      * Check if a grant type has been enabled
+     *
      * @param  string  $identifier The grant type identifier
      * @return boolean             Returns "true" if enabled, "false" if not
      */
@@ -277,6 +279,7 @@ class Authorization
 
     /**
      * Require the "scope" paremter in checkAuthoriseParams()
+     *
      * @param  boolean $require
      * @return void
      */
@@ -287,6 +290,7 @@ class Authorization
 
     /**
      * Is the scope parameter required?
+     *
      * @return bool
      */
     public function scopeParamRequired()
@@ -306,6 +310,7 @@ class Authorization
 
     /**
      * Default scope to be used if none is provided and requireScopeParam is false
+     *
      * @return string|null
      */
     public function getDefaultScope()
@@ -315,6 +320,7 @@ class Authorization
 
     /**
      * Require the "state" paremter in checkAuthoriseParams()
+     *
      * @param  boolean $require
      * @return void
      */
@@ -325,6 +331,7 @@ class Authorization
 
     /**
      * Require the "state" paremter in checkAuthoriseParams()
+     *
      * @param  boolean $require
      * @return void
      */
@@ -357,6 +364,7 @@ class Authorization
 
     /**
      * Get the TTL for an access token
+     *
      * @return int The TTL
      */
     public function getAccessTokenTTL()
@@ -366,6 +374,7 @@ class Authorization
 
     /**
      * Set the TTL for an access token
+     *
      * @param int $accessTokenTTL The new TTL
      */
     public function setAccessTokenTTL($accessTokenTTL = 3600)
@@ -403,12 +412,28 @@ class Authorization
 
     /**
      * Return a storage class
+     *
      * @param  string $obj The class required
      * @return Storage\ClientInterface|Storage\ScopeInterface|Storage\SessionInterface
      */
     public function getStorage($obj)
     {
         return $this->storages[$obj];
+    }
+
+    /**
+     * Pre token persist validator.
+     *
+     * Override and add your own validation if required
+     *
+     * @param array $data
+     * @return void
+     */
+    public function preTokenPersistValidator($data)
+    {
+        unset($data);
+
+        return;
     }
 
     /**
@@ -436,6 +461,7 @@ class Authorization
 
     /**
      * Return a grant type class
+     *
      * @param  string $grantType The grant type identifer
      * @return Grant\AuthCode|Grant\ClientCredentials|Grant\Implict|Grant\Password|Grant\RefreshToken
      */
@@ -450,6 +476,7 @@ class Authorization
 
     /**
      * Get a parameter from passed input parameters or the Request class
+     *
      * @param  string|array $param Required parameter
      * @param  string $method      Get/put/post/delete
      * @param  array  $inputParams Passed input parameters

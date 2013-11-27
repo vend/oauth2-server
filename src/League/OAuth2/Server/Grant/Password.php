@@ -58,6 +58,7 @@ class Password implements GrantTypeInterface {
 
     /**
      * Set the callback to verify a user's username and password
+     *
      * @param callable $callback The callback function
      * @return void
      */
@@ -68,6 +69,7 @@ class Password implements GrantTypeInterface {
 
     /**
      * Return the callback function
+     *
      * @return callable
      */
     protected function getVerifyCredentialsCallback()
@@ -81,6 +83,7 @@ class Password implements GrantTypeInterface {
 
     /**
      * Complete the password grant
+     * 
      * @param  null|array $inputParams
      * @return array
      */

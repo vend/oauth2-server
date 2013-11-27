@@ -18,6 +18,7 @@ class SecureKey
 {
     /**
      * Generate a new unique code
+     * 
      * @param  integer $len Length of the generated code
      * @return string
      */

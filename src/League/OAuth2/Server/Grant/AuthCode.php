@@ -58,6 +58,7 @@ class AuthCode implements GrantTypeInterface {
 
     /**
      * Override the default access token expire time
+     *
      * @param int $authTokenTTL
      * @return void
      */
@@ -177,6 +178,7 @@ class AuthCode implements GrantTypeInterface {
 
     /**
      * Complete the auth code grant
+     *
      * @param  null|array $inputParams
      * @return array
      */
@@ -225,6 +227,9 @@ class AuthCode implements GrantTypeInterface {
         $accessToken = SecureKey::make();
         $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
         $accessTokenExpires = time() + $accessTokenExpiresIn;
+
+        // Custom pre token persist validator
+        $this->authServer->preTokenPersistValidator($authCodeDetails);
 
         // Remove the auth code
         $this->authServer->getStorage('session')->removeAuthCode($authCodeDetails['session_id']);
