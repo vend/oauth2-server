@@ -83,7 +83,7 @@ class Password implements GrantTypeInterface {
 
     /**
      * Complete the password grant
-     * 
+     *
      * @param  null|array $inputParams
      * @return array
      */

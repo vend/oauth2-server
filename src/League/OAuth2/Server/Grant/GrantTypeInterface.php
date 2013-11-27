@@ -35,7 +35,7 @@ interface GrantTypeInterface
      * 	array(
      *  	'access_token'  =>  (string),	// The access token
      *      'refresh_token' =>  (string),	// The refresh token (only set if the refresh token grant is enabled)
-     *      'token_type'    =>  'bearer',	// Almost always "bearer" (exceptions: JWT, SAML)
+     *      'token_type'    =>  'Bearer',	// Almost always "Bearer" (exceptions: JWT, SAML)
      *      'expires'       =>  (int),		// The timestamp of when the access token will expire
      *      'expires_in'    =>  (int)		// The number of seconds before the access token will expire
      *  )

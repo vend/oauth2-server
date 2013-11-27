@@ -96,7 +96,7 @@ class RefreshToken implements GrantTypeInterface {
 
     /**
      * Complete the refresh token grant
-     * 
+     *
      * @param  null|array $inputParams
      * @return array
      */
@@ -196,7 +196,7 @@ class RefreshToken implements GrantTypeInterface {
 
         $response = array(
             'access_token'  =>  $accessToken,
-            'token_type'    =>  'bearer',
+            'token_type'    =>  'Bearer',
             'expires'       =>  $accessTokenExpires,
             'expires_in'    =>  $accessTokenExpiresIn
         );
