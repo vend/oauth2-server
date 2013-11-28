@@ -177,6 +177,37 @@ class AuthCode implements GrantTypeInterface {
     }
 
     /**
+     * Determines whether the client is trusted (will be automatically approved).
+     *
+     * This will affect the access token TTL that will be retrieved from the
+     * authorization server (if no TTL override has been set on this instance).
+     *
+     * Override and add your own logic if required
+     *
+     * @param array $clientDetails
+     * @return false
+     */
+    protected function isClientTrusted($clientDetails)
+    {
+        return false;
+    }
+
+    /**
+     * Pre token persist validator.
+     *
+     * Override and add your own validation if required
+     *
+     * @param array $authCodeDetails
+     * @return void
+     */
+    protected function preTokenPersistValidator($authCodeDetails)
+    {
+        unset($authCodeDetails);
+
+        return;
+    }
+
+    /**
      * Complete the auth code grant
      *
      * @param  null|array $inputParams
@@ -225,7 +256,7 @@ class AuthCode implements GrantTypeInterface {
 
         // A session ID was returned so update it with an access token and remove the authorisation code
         $accessToken = SecureKey::make();
-        $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
+        $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL($this->isClientTrusted($clientDetails));
         $accessTokenExpires = time() + $accessTokenExpiresIn;
 
         // Custom pre token persist validator
@@ -233,6 +264,8 @@ class AuthCode implements GrantTypeInterface {
 
         // Remove the auth code
         $this->authServer->getStorage('session')->removeAuthCode($authCodeDetails['session_id']);
+
+        $this->preTokenPersistValidator($authCodeDetails);
 
         // Create an access token
         $accessTokenId = $this->authServer->getStorage('session')->associateAccessToken($authCodeDetails['session_id'], $accessToken, $accessTokenExpires);

@@ -35,7 +35,14 @@ class Authorization
      * The TTL (time to live) of an access token in seconds (default: 3600)
      * @var integer
      */
-    protected $accessTokenTTL = 3600;
+    protected $accessTokenTTL = 3600;  // 1 hour
+
+    /**
+     * Access token TTL for trusted client apps
+     *
+     * @var int
+     */
+    protected $trustedClientAccessTokenTTL = 604800;  // 7 days
 
     /**
      * The registered grant response types
@@ -365,10 +372,14 @@ class Authorization
     /**
      * Get the TTL for an access token
      *
+     * @param boolean $trusted_client
      * @return int The TTL
      */
-    public function getAccessTokenTTL()
+    public function getAccessTokenTTL($trusted_client = false)
     {
+        if ($trusted_client) {
+            return $this->trustedClientAccessTokenTTL;
+        }
         return $this->accessTokenTTL;
     }
 
@@ -376,9 +387,13 @@ class Authorization
      * Set the TTL for an access token
      *
      * @param int $accessTokenTTL The new TTL
+     * @param boolean $trusted_client
      */
-    public function setAccessTokenTTL($accessTokenTTL = 3600)
+    public function setAccessTokenTTL($accessTokenTTL = 3600, $trusted_client = false)
     {
+        if ($trusted_client) {
+            $this->trustedClientAccessTokenTTL = $accessTokenTTL;
+        }
         $this->accessTokenTTL = $accessTokenTTL;
         return $this;
     }
