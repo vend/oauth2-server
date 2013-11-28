@@ -265,8 +265,6 @@ class AuthCode implements GrantTypeInterface {
         // Remove the auth code
         $this->authServer->getStorage('session')->removeAuthCode($authCodeDetails['session_id']);
 
-        $this->preTokenPersistValidator($authCodeDetails);
-
         // Create an access token
         $accessTokenId = $this->authServer->getStorage('session')->associateAccessToken($authCodeDetails['session_id'], $accessToken, $accessTokenExpires);
 
