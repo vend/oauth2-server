@@ -372,14 +372,10 @@ class Authorization
     /**
      * Get the TTL for an access token
      *
-     * @param boolean $trusted_client
      * @return int The TTL
      */
-    public function getAccessTokenTTL($trusted_client = false)
+    public function getAccessTokenTTL()
     {
-        if ($trusted_client) {
-            return $this->trustedClientAccessTokenTTL;
-        }
         return $this->accessTokenTTL;
     }
 
@@ -387,15 +383,31 @@ class Authorization
      * Set the TTL for an access token
      *
      * @param int $accessTokenTTL The new TTL
-     * @param boolean $trusted_client
      */
-    public function setAccessTokenTTL($accessTokenTTL = 3600, $trusted_client = false)
+    public function setAccessTokenTTL($accessTokenTTL = 3600)
     {
-        if ($trusted_client) {
-            $this->trustedClientAccessTokenTTL = $accessTokenTTL;
-        }
         $this->accessTokenTTL = $accessTokenTTL;
         return $this;
+    }
+
+    /**
+     * Get the TTL for an access token for a trusted client
+     *
+     * @return int The TTL
+     */
+    public function getAccessTokenTTLForTrustedClient()
+    {
+        return $this->trustedClientAccessTokenTTL;
+    }
+
+    /**
+     * Set the TTL for an access token for a trusted client
+     *
+     * @param int $accessTokenTTL The new TTL
+     */
+    public function setAccessTokenTTLForTrustedClient($accessTokenTTL = 604800)
+    {
+        $this->trustedClientAccessTokenTTL = $accessTokenTTL;
     }
 
     /**
