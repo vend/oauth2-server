@@ -177,19 +177,19 @@ class AuthCode implements GrantTypeInterface {
     }
 
     /**
-     * Determines whether the client is trusted (will be automatically approved).
+     * Adjust custom access token TTL for the given client.
+     * E.g. Set longer TTL for a trusted client
      *
-     * This will affect the access token TTL that will be retrieved from the
-     * authorization server (if no TTL override has been set on this instance).
-     *
-     * Override and add your own logic if required
+     * Override and add your own logic if required.
      *
      * @param array $clientDetails
-     * @return false
+     * @return void
      */
-    protected function isClientTrusted($clientDetails)
+    protected function adjustAccessTokenTTLForClient($clientDetails)
     {
-        return false;
+        unset($clientDetails);
+
+        return;
     }
 
     /**
@@ -258,11 +258,8 @@ class AuthCode implements GrantTypeInterface {
         $accessToken = SecureKey::make();
 
         // Determine access token TTL
-        if ($this->isClientTrusted($clientDetails)) {
-            $accessTokenExpiresIn = $this->authServer->getAccessTokenTTLForTrustedClient();
-        } else {
-            $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
-        }
+        $this->adjustAccessTokenTTLForClient($clientDetails);
+        $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
         $accessTokenExpires = time() + $accessTokenExpiresIn;
 
         // Custom pre token persist validator

@@ -38,13 +38,6 @@ class Authorization
     protected $accessTokenTTL = 3600;  // 1 hour
 
     /**
-     * Access token TTL for trusted client apps
-     *
-     * @var int
-     */
-    protected $trustedClientAccessTokenTTL = 604800;  // 7 days
-
-    /**
      * The registered grant response types
      * @var array
      */
@@ -388,26 +381,6 @@ class Authorization
     {
         $this->accessTokenTTL = $accessTokenTTL;
         return $this;
-    }
-
-    /**
-     * Get the TTL for an access token for a trusted client
-     *
-     * @return int The TTL
-     */
-    public function getAccessTokenTTLForTrustedClient()
-    {
-        return $this->trustedClientAccessTokenTTL;
-    }
-
-    /**
-     * Set the TTL for an access token for a trusted client
-     *
-     * @param int $accessTokenTTL The new TTL
-     */
-    public function setAccessTokenTTLForTrustedClient($accessTokenTTL = 604800)
-    {
-        $this->trustedClientAccessTokenTTL = $accessTokenTTL;
     }
 
     /**
