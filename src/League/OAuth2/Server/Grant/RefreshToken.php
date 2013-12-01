@@ -140,9 +140,13 @@ class RefreshToken implements GrantTypeInterface {
         $scopes = $this->authServer->getStorage('session')->getScopes($accessTokenDetails['access_token']);
 
         // Generate new tokens and associate them to the session
+        $this->authServer->adjustAccessTokenTTLForClient($clientDetails);
         $accessToken = SecureKey::make();
         $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
         $accessTokenExpires = time() + $accessTokenExpiresIn;
+
+        // Custom pre token persist validator
+        $this->authServer->preTokenPersistValidator($accessTokenDetails);
 
         // Associate the new access token with the session
         $newAccessTokenId = $this->authServer->getStorage('session')->associateAccessToken($accessTokenDetails['session_id'], $accessToken, $accessTokenExpires);

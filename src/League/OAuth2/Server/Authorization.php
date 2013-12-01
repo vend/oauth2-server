@@ -23,6 +23,14 @@ use League\OAuth2\Server\Grant\GrantTypeInterface;
  */
 class Authorization
 {
+
+    // Grant types
+    const GRANT_TYPE_AUTHORIZATION_CODE = 'authorization_code';
+    const GRANT_TYPE_CLIENT_CREDENTIALS = 'client_credentials';
+    const GRANT_TYPE_REFRESH_TOKEN      = 'refresh_token';
+    const GRANT_TYPE_IMPLICIT           = 'implicit';
+    const GRANT_TYPE_PASSWORD           = 'password';
+
     /**
      * The delimeter between scopes specified in the scope query string parameter
      *
@@ -381,6 +389,22 @@ class Authorization
     {
         $this->accessTokenTTL = $accessTokenTTL;
         return $this;
+    }
+
+    /**
+     * Adjust access token TTL for the given client data.
+     * E.g. Set longer TTL for a trusted client.
+     *
+     * Override and add your own logic if required.
+     *
+     * @param array $clientDetails
+     * @return void
+     */
+    public function adjustAccessTokenTTLForClient($clientDetails)
+    {
+        unset($clientDetails);
+
+        return;
     }
 
     /**
