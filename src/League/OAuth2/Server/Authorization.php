@@ -43,7 +43,7 @@ class Authorization
      * The TTL (time to live) of an access token in seconds (default: 3600)
      * @var integer
      */
-    protected $accessTokenTTL = 3600;  // 1 hour
+    protected $accessTokenTTL = 3600;
 
     /**
      * The registered grant response types
@@ -389,22 +389,6 @@ class Authorization
     {
         $this->accessTokenTTL = $accessTokenTTL;
         return $this;
-    }
-
-    /**
-     * Adjust access token TTL for the given client data.
-     * E.g. Set longer TTL for a trusted client.
-     *
-     * Override and add your own logic if required.
-     *
-     * @param array $clientDetails
-     * @return void
-     */
-    public function adjustAccessTokenTTLForClient($clientDetails)
-    {
-        unset($clientDetails);
-
-        return;
     }
 
     /**

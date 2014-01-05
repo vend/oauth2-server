@@ -14,21 +14,6 @@ namespace League\OAuth2\Server\Storage;
 interface SessionInterface
 {
     /**
-     * Get a session
-     *
-     * Example SQL query:
-     *
-     * <code>
-     * SELECT * FROM oauth_sessions WHERE client_id = :clientId AND owner_id = :typeId
-     * </code>
-     *
-     * @param  string $clientId  The client ID
-     * @param  string $ownerId   The ID of the session owner (e.g. "123")
-     * @return array
-     */
-    public function getSession($clientId, $ownerId);
-
-    /**
      * Create a new session
      *
      * Example SQL query:
@@ -46,22 +31,35 @@ interface SessionInterface
     public function createSession($clientId, $ownerType, $ownerId);
 
     /**
-     * Assocate an authorization code with a session
+     * Delete a session
      *
      * Example SQL query:
      *
      * <code>
-     * INSERT INTO oauth_session_authcodes (session_id, auth_code, auth_code_expires)
-     *  VALUE (:sessionId, :authCode, :authCodeExpires)
+     * DELETE FROM oauth_sessions WHERE client_id = :clientId AND owner_type = :type AND owner_id = :typeId
+     * </code>
+     *
+     * @param  string $clientId  The client ID
+     * @param  string $ownerType The type of the session owner (e.g. "user")
+     * @param  string $ownerId   The ID of the session owner (e.g. "123")
+     * @return void
+     */
+    public function deleteSession($clientId, $ownerType, $ownerId);
+
+    /**
+     * Associate a redirect URI with a session
+     *
+     * Example SQL query:
+     *
+     * <code>
+     * INSERT INTO oauth_session_redirects (session_id, redirect_uri) VALUE (:sessionId, :redirectUri)
      * </code>
      *
      * @param  int    $sessionId   The session ID
-     * @param  string $authCode    The authorization code
      * @param  string $redirectUri The redirect URI
-     * @param  int    $expireTime  Unix timestamp of the access token expiry time
-     * @return int                 The auth code ID
+     * @return void
      */
-    public function associateAuthCode($sessionId, $authCode, $redirectUri, $expireTime);
+    public function associateRedirectUri($sessionId, $redirectUri);
 
     /**
      * Associate an access token with a session
@@ -97,6 +95,23 @@ interface SessionInterface
      * @return void
      */
     public function associateRefreshToken($accessTokenId, $refreshToken, $expireTime, $clientId);
+
+    /**
+     * Assocate an authorization code with a session
+     *
+     * Example SQL query:
+     *
+     * <code>
+     * INSERT INTO oauth_session_authcodes (session_id, auth_code, auth_code_expires)
+     *  VALUE (:sessionId, :authCode, :authCodeExpires)
+     * </code>
+     *
+     * @param  int    $sessionId  The session ID
+     * @param  string $authCode   The authorization code
+     * @param  int    $expireTime Unix timestamp of the access token expiry time
+     * @return int                The auth code ID
+     */
+    public function associateAuthCode($sessionId, $authCode, $expireTime);
 
     /**
      * Remove an associated authorization token from a session
@@ -193,7 +208,7 @@ interface SessionInterface
      *  AND refresh_token_expires >= UNIX_TIMESTAMP(NOW()) AND client_id = :clientId
      * </code>
      *
-     * @param  string   $refreshToken The access token
+     * @param  string   $refreshToken The refresh token
      * @param  string   $clientId     The client ID
      * @return int|bool               The ID of the access token the refresh token is linked to (or false if invalid)
      */
