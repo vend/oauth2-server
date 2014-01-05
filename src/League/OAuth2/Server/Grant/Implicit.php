@@ -52,21 +52,13 @@ class Implicit implements GrantTypeInterface {
 
     /**
      * Complete the client credentials grant
-     * 
      * @param  null|array $inputParams
      * @return array
      */
     public function completeFlow($authParams = null)
     {
-        // Get existing session
-        $session = $this->authServer->getStorage('session')->getSession($authParams['client_id'], $authParams['user_id']);
-
-        // Create new session if one doesn't exist
-        if (!$session) {
-            $sessionId = $this->authServer->getStorage('session')->createSession($authParams['client_id'], 'user', $authParams['user_id']);
-        } else {
-            $sessionId = $session['id'];
-        }
+        // Remove any old sessions the user might have
+        $this->authServer->getStorage('session')->deleteSession($authParams['client_id'], 'user', $authParams['user_id']);
 
         // Generate a new access token
         $accessToken = SecureKey::make();
@@ -74,6 +66,9 @@ class Implicit implements GrantTypeInterface {
         // Compute expiry time
         $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
         $accessTokenExpires = time() + $accessTokenExpiresIn;
+
+        // Create a new session
+        $sessionId = $this->authServer->getStorage('session')->createSession($authParams['client_id'], 'user', $authParams['user_id']);
 
         // Create an access token
         $accessTokenId = $this->authServer->getStorage('session')->associateAccessToken($sessionId, $accessToken, $accessTokenExpires);

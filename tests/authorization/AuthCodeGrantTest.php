@@ -388,7 +388,7 @@ class Auth_Code_Grant_Test extends PHPUnit_Framework_TestCase
 
     function test_newAuthoriseRequest()
     {
-        $this->session->shouldReceive('getSession')->andReturn(false);
+        $this->session->shouldReceive('deleteSession')->andReturn(false);
         $this->session->shouldReceive('createSession')->andReturn(1);
         $this->session->shouldReceive('associateScope')->andReturn(null);
         $this->session->shouldReceive('associateRedirectUri')->andReturn(null);

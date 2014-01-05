@@ -155,18 +155,17 @@ class AuthCode implements GrantTypeInterface {
         // Generate an auth code
         $authCode = SecureKey::make();
 
-        // Get existing session
-        $session = $this->authServer->getStorage('session')->getSession($authParams['client_id'], $typeId);
+        // Remove any old sessions the user might have
+        $this->authServer->getStorage('session')->deleteSession($authParams['client_id'], $type, $typeId);
 
-        // Create new session if one doesn't exist
-        if (!$session) {
-            $sessionId = $this->authServer->getStorage('session')->createSession($authParams['client_id'], $type, $typeId);
-        } else {
-            $sessionId = $session['id'];
-        }
+        // Create a new session
+        $sessionId = $this->authServer->getStorage('session')->createSession($authParams['client_id'], $type, $typeId);
+
+        // Associate a redirect URI
+        $this->authServer->getStorage('session')->associateRedirectUri($sessionId, $authParams['redirect_uri']);
 
         // Associate the auth code
-        $authCodeId = $this->authServer->getStorage('session')->associateAuthCode($sessionId, $authCode, $authParams['redirect_uri'], time() + $this->authTokenTTL);
+        $authCodeId = $this->authServer->getStorage('session')->associateAuthCode($sessionId, $authCode, time() + $this->authTokenTTL);
 
         // Associate the scopes to the auth code
         foreach ($authParams['scopes'] as $scope) {
