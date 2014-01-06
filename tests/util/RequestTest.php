@@ -35,6 +35,16 @@ class Request_test extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array('foo' => 'bar'), $this->request->post());
 	}
 
+    function test_put()
+	{
+		$this->assertNull($this->request->put());
+	}
+
+    function test_delete()
+	{
+		$this->assertNull($this->request->delete());
+	}
+
 	function test_file()
 	{
 		$this->assertEquals('bar', $this->request->file('foo'));

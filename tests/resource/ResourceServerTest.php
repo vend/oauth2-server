@@ -59,6 +59,12 @@ class Resource_Server_test extends PHPUnit_Framework_TestCase
         $this->assertEquals('oauth_token', $v);
     }
 
+    public function test_getSessionId()
+    {
+        $s = $this->returnDefault();
+        $this->assertNull($s->getSessionId());
+    }
+
     public function test_getScopes()
     {
         $s = $this->returnDefault();
