@@ -153,6 +153,21 @@ class Resource_Server_test extends PHPUnit_Framework_TestCase
         $this->assertEquals('abcdef', $result);
     }
 
+    /**
+     * @expectedException League\OAuth2\Server\Exception\MissingAccessTokenException
+     */
+    public function test_determineAccessToken_invalidRequestMethod()
+    {
+        $s = $this->returnDefault();
+
+    	$_SERVER['REQUEST_METHOD'] = 'put';
+   		$request = new League\OAuth2\Server\Util\Request($_GET, array(), array(), array(), $_SERVER);
+
+    	$s->setRequest($request);
+
+	    $s->determineAccessToken();
+    }
+
     public function test_determineAccessToken_fromMethod()
     {
     	$s = $this->returnDefault();

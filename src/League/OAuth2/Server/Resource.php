@@ -268,21 +268,19 @@ class Resource
             // 2nd request: Authorization: Bearer XXX, Bearer XXX
             if (strpos($header, ',') !== false) {
                 $headerPart = explode(',', $header);
-                $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s/', '', $headerPart[0]));
+                $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s?/', '', $headerPart[0]));
             } else {
-                $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s/', '', $header));
+                $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s?/', '', $header));
             }
-            // Check header contains the keyword 'Bearer'
-            $required_keyword_present = strpos($header, 'Bearer');
-
-            // Set blank access token if no token is given OR the required 'Bearer' keyword is not present in the header
-            $accessToken = ($accessToken === 'Bearer' || $required_keyword_present === false) ? '' : $accessToken;
-
         } elseif ($headersOnly === false) {
-            $method = $this->getRequest()->server('REQUEST_METHOD');
-            $accessToken = $this->getRequest()->{$method}($this->tokenKey);
+            $method = strtolower($this->getRequest()->server('REQUEST_METHOD'));
+            // Request method must be get or post
+            if ($method == 'get' || $method == 'post') {
+                $accessToken = $this->getRequest()->{$method}($this->tokenKey);
+            } else {
+                throw new Exception\MissingAccessTokenException('An access token can only be set as a request parameter for GET and POST requests');
+            }
         }
-
         if (empty($accessToken)) {
             throw new Exception\MissingAccessTokenException('Access token is missing');
         }
