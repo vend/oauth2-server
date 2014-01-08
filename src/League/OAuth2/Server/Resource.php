@@ -262,7 +262,7 @@ class Resource
         if ($header) {
             // Only proceed if header contains keyword 'Bearer'
             $accessToken = '';
-            if (strpos($header, 'Bearer')) {
+            if (strpos($header, 'Bearer') !== false) {
                 // Check for special case, because cURL sometimes does an
                 // internal second request and doubles the authorization header,
                 // which always resulted in an error.
