@@ -260,17 +260,21 @@ class Resource
     {
         $header = $this->getRequest()->header('Authorization');
         if ($header) {
-            // Check for special case, because cURL sometimes does an
-            // internal second request and doubles the authorization header,
-            // which always resulted in an error.
-            //
-            // 1st request: Authorization: Bearer XXX
-            // 2nd request: Authorization: Bearer XXX, Bearer XXX
-            if (strpos($header, ',') !== false) {
-                $headerPart = explode(',', $header);
-                $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s?/', '', $headerPart[0]));
-            } else {
-                $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s?/', '', $header));
+            // Only proceed if header contains keyword 'Bearer'
+            $accessToken = '';
+            if (strpos($header, 'Bearer')) {
+                // Check for special case, because cURL sometimes does an
+                // internal second request and doubles the authorization header,
+                // which always resulted in an error.
+                //
+                // 1st request: Authorization: Bearer XXX
+                // 2nd request: Authorization: Bearer XXX, Bearer XXX
+                if (strpos($header, ',') !== false) {
+                    $headerPart = explode(',', $header);
+                    $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s?/', '', $headerPart[0]));
+                } else {
+                    $accessToken = trim(preg_replace('/^(?:\s+)?Bearer\s?/', '', $header));
+                }
             }
         } elseif ($headersOnly === false) {
             $method = strtolower($this->getRequest()->server('REQUEST_METHOD'));
