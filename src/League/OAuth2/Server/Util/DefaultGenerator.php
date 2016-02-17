@@ -11,18 +11,15 @@
 
 namespace League\OAuth2\Server\Util;
 
-/**
- * SecureKey class
- */
-class SecureKey
+class DefaultGenerator implements TokenGeneratorInterface
 {
     /**
-     * Generate a new unique code
+     * Generate a new unique token
      * 
-     * @param  integer $len Length of the generated code
+     * @param  int    $len Length of the generated token
      * @return string
      */
-    public static function make($len = 40)
+    public function generate($len = 40)
     {
         // We generate twice as many bytes here because we want to ensure we have
         // enough after we base64 encode it to get the length we need because we

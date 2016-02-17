@@ -22,9 +22,10 @@ use League\OAuth2\Server\Storage\ScopeInterface;
 /**
  * Password grant class
  */
-class Password implements GrantTypeInterface {
-
+class Password implements GrantTypeInterface
+{
     use GrantTrait;
+    use TokenGeneratorTrait;
 
     /**
      * Grant identifier
@@ -40,13 +41,13 @@ class Password implements GrantTypeInterface {
 
     /**
      * Callback to authenticate a user's name and password
-     * @var function
+     * @var callback
      */
     protected $callback = null;
 
     /**
      * AuthServer instance
-     * @var AuthServer
+     * @var Authorization
      */
     protected $authServer = null;
 
@@ -156,7 +157,7 @@ class Password implements GrantTypeInterface {
         }
 
         // Generate an access token
-        $accessToken = SecureKey::make();
+        $accessToken = $this->getTokenGenerator()->generate();
         $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
         $accessTokenExpires = time() + $accessTokenExpiresIn;
 
@@ -180,7 +181,7 @@ class Password implements GrantTypeInterface {
 
         // Associate a refresh token if set
         if ($this->authServer->hasGrantType('refresh_token')) {
-            $refreshToken = SecureKey::make();
+            $refreshToken = $this->getTokenGenerator()->generate();
             $refreshTokenTTL = time() + $this->authServer->getGrantType('refresh_token')->getRefreshTokenTTL();
             $this->authServer->getStorage('session')->associateRefreshToken($accessTokenId, $refreshToken, $refreshTokenTTL, $authParams['client_id']);
             $response['refresh_token'] = $refreshToken;
