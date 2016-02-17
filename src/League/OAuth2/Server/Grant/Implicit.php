@@ -11,20 +11,16 @@
 
 namespace League\OAuth2\Server\Grant;
 
-use League\OAuth2\Server\Request;
 use League\OAuth2\Server\Authorization;
 use League\OAuth2\Server\Exception;
-use League\OAuth2\Server\Util\SecureKey;
-use League\OAuth2\Server\Storage\SessionInterface;
-use League\OAuth2\Server\Storage\ClientInterface;
-use League\OAuth2\Server\Storage\ScopeInterface;
 
 /**
  * Client credentials grant class
  */
-class Implicit implements GrantTypeInterface {
-
+class Implicit implements GrantTypeInterface
+{
     use GrantTrait;
+    use TokenGeneratorTrait;
 
     /**
      * Grant identifier
@@ -40,7 +36,7 @@ class Implicit implements GrantTypeInterface {
 
     /**
      * AuthServer instance
-     * @var AuthServer
+     * @var Authorization
      */
     protected $authServer = null;
 
@@ -61,7 +57,7 @@ class Implicit implements GrantTypeInterface {
         $this->authServer->getStorage('session')->deleteSession($authParams['client_id'], 'user', $authParams['user_id']);
 
         // Generate a new access token
-        $accessToken = SecureKey::make();
+        $accessToken = $this->getTokenGenerator()->generate();
 
         // Compute expiry time
         $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();

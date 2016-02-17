@@ -22,9 +22,10 @@ use League\OAuth2\Server\Storage\ScopeInterface;
 /**
  * Client credentials grant class
  */
-class ClientCredentials implements GrantTypeInterface {
-
+class ClientCredentials implements GrantTypeInterface
+{
     use GrantTrait;
+    use TokenGeneratorTrait;
 
     /**
      * Grant identifier
@@ -40,7 +41,7 @@ class ClientCredentials implements GrantTypeInterface {
 
     /**
      * AuthServer instance
-     * @var AuthServer
+     * @var Authorization
      */
     protected $authServer = null;
 
@@ -141,7 +142,7 @@ class ClientCredentials implements GrantTypeInterface {
         }
 
         // Generate an access token
-        $accessToken = SecureKey::make();
+        $accessToken = $this->getTokenGenerator()->generate();
         $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
         $accessTokenExpires = time() + $accessTokenExpiresIn;
 

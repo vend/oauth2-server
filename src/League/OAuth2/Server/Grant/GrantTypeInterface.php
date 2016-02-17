@@ -11,13 +11,9 @@
 
 namespace League\OAuth2\Server\Grant;
 
-use League\OAuth2\Server\Request;
 use League\OAuth2\Server\Authorization;
 use League\OAuth2\Server\Exception;
-use League\OAuth2\Server\Util\SecureKey;
-use League\OAuth2\Server\Storage\SessionInterface;
-use League\OAuth2\Server\Storage\ClientInterface;
-use League\OAuth2\Server\Storage\ScopeInterface;
+use League\OAuth2\Server\Util\TokenGeneratorInterface;
 
 interface GrantTypeInterface
 {
@@ -26,6 +22,11 @@ interface GrantTypeInterface
      * @return void
      */
     public function __construct(Authorization $authServer = null);
+
+    /**
+     * @param TokenGeneratorInterface $generator
+     */
+    public function setTokenGenerator(TokenGeneratorInterface $generator);
 
     /**
      * Complete the grant flow

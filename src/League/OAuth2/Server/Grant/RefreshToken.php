@@ -22,9 +22,10 @@ use League\OAuth2\Server\Storage\ScopeInterface;
 /**
  * Referesh token grant
  */
-class RefreshToken implements GrantTypeInterface {
-
+class RefreshToken implements GrantTypeInterface
+{
     use GrantTrait;
+    use TokenGeneratorTrait;
 
     /**
      * Grant identifier
@@ -40,7 +41,7 @@ class RefreshToken implements GrantTypeInterface {
 
     /**
      * AuthServer instance
-     * @var AuthServer
+     * @var Authorization
      */
     protected $authServer = null;
 
@@ -140,7 +141,7 @@ class RefreshToken implements GrantTypeInterface {
         $scopes = $this->authServer->getStorage('session')->getScopes($accessTokenDetails['access_token']);
 
         // Generate new tokens and associate them to the session
-        $accessToken = SecureKey::make();
+        $accessToken = $this->getTokenGenerator()->generate();
         $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
         $accessTokenExpires = time() + $accessTokenExpiresIn;
 
@@ -153,7 +154,7 @@ class RefreshToken implements GrantTypeInterface {
         if ($this->rotateRefreshTokens === true) {
 
             // Generate a new refresh token
-            $refreshToken = SecureKey::make();
+            $refreshToken = $this->getTokenGenerator()->generate();
             $refreshTokenExpires = time() + $this->getRefreshTokenTTL();
 
             // Revoke the old refresh token

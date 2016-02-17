@@ -11,20 +11,17 @@
 
 namespace League\OAuth2\Server\Grant;
 
-use League\OAuth2\Server\Request;
 use League\OAuth2\Server\Authorization;
 use League\OAuth2\Server\Exception;
-use League\OAuth2\Server\Util\SecureKey;
-use League\OAuth2\Server\Storage\SessionInterface;
-use League\OAuth2\Server\Storage\ClientInterface;
-use League\OAuth2\Server\Storage\ScopeInterface;
+use League\OAuth2\Server\Exception\ClientException;
 
 /**
  * Auth code grant class
  */
-class AuthCode implements GrantTypeInterface {
-
+class AuthCode implements GrantTypeInterface
+{
     use GrantTrait;
+    use TokenGeneratorTrait;
 
     /**
      * Grant identifier
@@ -40,7 +37,7 @@ class AuthCode implements GrantTypeInterface {
 
     /**
      * AuthServer instance
-     * @var AuthServer
+     * @var Authorization
      */
     protected $authServer = null;
 
@@ -71,7 +68,7 @@ class AuthCode implements GrantTypeInterface {
      * Check authorise parameters
      *
      * @param  array $inputParams Optional array of parsed $_GET keys
-     * @throws \OAuth2\Exception\ClientException
+     * @throws ClientException
      * @return array             Authorise request parameters
      */
     public function checkAuthoriseParams($inputParams = array())
@@ -153,7 +150,7 @@ class AuthCode implements GrantTypeInterface {
     public function newAuthoriseRequest($type, $typeId, $authParams = array())
     {
         // Generate an auth code
-        $authCode = SecureKey::make();
+        $authCode = $this->getTokenGenerator()->generate();
 
         // Remove any old sessions the user might have
         $this->authServer->getStorage('session')->deleteSession($authParams['client_id'], $type, $typeId);
@@ -223,7 +220,7 @@ class AuthCode implements GrantTypeInterface {
         $scopes = $this->authServer->getStorage('session')->getAuthCodeScopes($authCodeDetails['authcode_id']);
 
         // A session ID was returned so update it with an access token and remove the authorisation code
-        $accessToken = SecureKey::make();
+        $accessToken = $this->getTokenGenerator()->generate();
         $accessTokenExpiresIn = ($this->accessTokenTTL !== null) ? $this->accessTokenTTL : $this->authServer->getAccessTokenTTL();
         $accessTokenExpires = time() + $accessTokenExpiresIn;
 
@@ -252,7 +249,7 @@ class AuthCode implements GrantTypeInterface {
 
         // Associate a refresh token if set
         if ($this->authServer->hasGrantType('refresh_token')) {
-            $refreshToken = SecureKey::make();
+            $refreshToken = $this->getTokenGenerator()->generate();
             $refreshTokenTTL = time() + $this->authServer->getGrantType('refresh_token')->getRefreshTokenTTL();
             $this->authServer->getStorage('session')->associateRefreshToken($accessTokenId, $refreshToken, $refreshTokenTTL, $authParams['client_id']);
             $response['refresh_token'] = $refreshToken;

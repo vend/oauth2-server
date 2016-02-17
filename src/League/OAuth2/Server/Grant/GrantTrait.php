@@ -13,7 +13,8 @@ namespace League\OAuth2\Server\Grant;
 
 use League\OAuth2\Server\Authorization;
 
-trait GrantTrait {
+trait GrantTrait
+{
 
     /**
      * Constructor
