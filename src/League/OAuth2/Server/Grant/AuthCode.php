@@ -14,6 +14,7 @@ namespace League\OAuth2\Server\Grant;
 use League\OAuth2\Server\Authorization;
 use League\OAuth2\Server\Exception;
 use League\OAuth2\Server\Exception\ClientException;
+use League\OAuth2\Server\Util\DefaultGenerator;
 
 /**
  * Auth code grant class
@@ -149,8 +150,9 @@ class AuthCode implements GrantTypeInterface
      */
     public function newAuthoriseRequest($type, $typeId, $authParams = array())
     {
-        // Generate an auth code
-        $authCode = $this->getTokenGenerator()->generate();
+        // Generate an auth code.
+        // We want to use the default generator for this
+        $authCode = (new DefaultGenerator())->generate();
 
         // Remove any old sessions the user might have
         $this->authServer->getStorage('session')->deleteSession($authParams['client_id'], $type, $typeId);

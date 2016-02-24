@@ -12,7 +12,6 @@
 namespace League\OAuth2\Server;
 
 use League\OAuth2\Server\Util\Request;
-use League\OAuth2\Server\Util\SecureKey;
 use League\OAuth2\Server\Storage\SessionInterface;
 use League\OAuth2\Server\Storage\ClientInterface;
 use League\OAuth2\Server\Storage\ScopeInterface;
