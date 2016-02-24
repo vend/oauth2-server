@@ -13,6 +13,7 @@ namespace League\OAuth2\Server\Grant;
 
 use League\OAuth2\Server\Authorization;
 use League\OAuth2\Server\Exception;
+use League\OAuth2\Server\Util\DefaultGenerator;
 
 /**
  * Password grant class
@@ -176,7 +177,8 @@ class Password implements GrantTypeInterface
 
         // Associate a refresh token if set
         if ($this->authServer->hasGrantType('refresh_token')) {
-            $refreshToken = $this->getTokenGenerator()->generate();
+            // Use the default token generator for this
+            $refreshToken = (new DefaultGenerator())->generate();
             $refreshTokenTTL = time() + $this->authServer->getGrantType('refresh_token')->getRefreshTokenTTL();
             $this->authServer->getStorage('session')->associateRefreshToken($accessTokenId, $refreshToken, $refreshTokenTTL, $authParams['client_id']);
             $response['refresh_token'] = $refreshToken;

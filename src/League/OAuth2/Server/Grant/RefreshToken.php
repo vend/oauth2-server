@@ -13,6 +13,7 @@ namespace League\OAuth2\Server\Grant;
 
 use League\OAuth2\Server\Authorization;
 use League\OAuth2\Server\Exception;
+use League\OAuth2\Server\Util\DefaultGenerator;
 
 /**
  * Referesh token grant
@@ -148,8 +149,9 @@ class RefreshToken implements GrantTypeInterface
 
         if ($this->rotateRefreshTokens === true) {
 
-            // Generate a new refresh token
-            $refreshToken = $this->getTokenGenerator()->generate();
+            // Generate a new refresh token.
+            // Use the default token generator for this
+            $refreshToken = (new DefaultGenerator())->generate();
             $refreshTokenExpires = time() + $this->getRefreshTokenTTL();
 
             // Revoke the old refresh token

@@ -151,7 +151,7 @@ class AuthCode implements GrantTypeInterface
     public function newAuthoriseRequest($type, $typeId, $authParams = array())
     {
         // Generate an auth code.
-        // We want to use the default generator for this
+        // Use the default token generator for this
         $authCode = (new DefaultGenerator())->generate();
 
         // Remove any old sessions the user might have
@@ -251,7 +251,8 @@ class AuthCode implements GrantTypeInterface
 
         // Associate a refresh token if set
         if ($this->authServer->hasGrantType('refresh_token')) {
-            $refreshToken = $this->getTokenGenerator()->generate();
+            // Use the default token generator for this
+            $refreshToken = (new DefaultGenerator())->generate();
             $refreshTokenTTL = time() + $this->authServer->getGrantType('refresh_token')->getRefreshTokenTTL();
             $this->authServer->getStorage('session')->associateRefreshToken($accessTokenId, $refreshToken, $refreshTokenTTL, $authParams['client_id']);
             $response['refresh_token'] = $refreshToken;
