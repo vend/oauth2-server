@@ -77,15 +77,15 @@ class AuthCode implements GrantTypeInterface
         // Auth params
         $authParams = $this->authServer->getParam(array('client_id', 'redirect_uri', 'response_type', 'scope', 'state'), 'get', $inputParams);
 
-        if (is_null($authParams['client_id'])) {
+        if (empty($authParams['client_id'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'client_id'), 0);
         }
 
-        if (is_null($authParams['redirect_uri'])) {
+        if (empty($authParams['redirect_uri'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'redirect_uri'), 0);
         }
 
-        if ($this->authServer->stateParamRequired() === true && is_null($authParams['state'])) {
+        if ($this->authServer->stateParamRequired() === true && empty($authParams['state'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'state'), 0);
         }
 
@@ -98,7 +98,7 @@ class AuthCode implements GrantTypeInterface
 
         $authParams['client_details'] = $clientDetails;
 
-        if (is_null($authParams['response_type'])) {
+        if (empty($authParams['response_type'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'response_type'), 0);
         }
 
@@ -185,15 +185,15 @@ class AuthCode implements GrantTypeInterface
         // Get the required params
         $authParams = $this->authServer->getParam(array('client_id', 'client_secret', 'redirect_uri', 'code'), 'post', $inputParams);
 
-        if (is_null($authParams['client_id'])) {
+        if (empty($authParams['client_id'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'client_id'), 0);
         }
 
-        if (is_null($authParams['client_secret'])) {
+        if (empty($authParams['client_secret'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'client_secret'), 0);
         }
 
-        if (is_null($authParams['redirect_uri'])) {
+        if (empty($authParams['redirect_uri'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'redirect_uri'), 0);
         }
 
@@ -207,7 +207,7 @@ class AuthCode implements GrantTypeInterface
         $authParams['client_details'] = $clientDetails;
 
         // Validate the authorization code
-        if (is_null($authParams['code'])) {
+        if (empty($authParams['code'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'code'), 0);
         }
 

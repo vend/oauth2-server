@@ -89,11 +89,11 @@ class Password implements GrantTypeInterface
         // Get the required params
         $authParams = $this->authServer->getParam(array('client_id', 'client_secret', 'username', 'password'), 'post', $inputParams);
 
-        if (is_null($authParams['client_id'])) {
+        if (empty($authParams['client_id'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'client_id'), 0);
         }
 
-        if (is_null($authParams['client_secret'])) {
+        if (empty($authParams['client_secret'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'client_secret'), 0);
         }
 
@@ -106,11 +106,11 @@ class Password implements GrantTypeInterface
 
         $authParams['client_details'] = $clientDetails;
 
-        if (is_null($authParams['username'])) {
+        if (empty($authParams['username'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'username'), 0);
         }
 
-        if (is_null($authParams['password'])) {
+        if (empty($authParams['password'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'password'), 0);
         }
 
