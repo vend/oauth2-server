@@ -41,7 +41,25 @@ class Password_Grant_Test extends PHPUnit_Framework_TestCase
      * @expectedException        League\OAuth2\Server\Exception\ClientException
      * @expectedExceptionCode    0
      */
-    public function test_issueAccessToken_passwordGrant_missingClientPassword()
+    public function test_issueAccessToken_passwordGrant_emptyClientId()
+    {
+        $a = $this->returnDefault();
+        $a->addGrantType(new League\OAuth2\Server\Grant\Password());
+
+        $request = new League\OAuth2\Server\Util\Request(array(), $_POST);
+        $a->setRequest($request);
+
+        $a->issueAccessToken(array(
+            'grant_type'    =>  'password',
+            'client_id' =>  ''
+        ));
+    }
+
+    /**
+     * @expectedException        League\OAuth2\Server\Exception\ClientException
+     * @expectedExceptionCode    0
+     */
+    public function test_issueAccessToken_passwordGrant_missingClientSecret()
     {
         $a = $this->returnDefault();
         $a->addGrantType(new League\OAuth2\Server\Grant\Password());
@@ -52,6 +70,25 @@ class Password_Grant_Test extends PHPUnit_Framework_TestCase
         $a->issueAccessToken(array(
             'grant_type'    =>  'password',
             'client_id' =>  1234
+        ));
+    }
+
+    /**
+     * @expectedException        League\OAuth2\Server\Exception\ClientException
+     * @expectedExceptionCode    0
+     */
+    public function test_issueAccessToken_passwordGrant_emptyClientSecret()
+    {
+        $a = $this->returnDefault();
+        $a->addGrantType(new League\OAuth2\Server\Grant\Password());
+
+        $request = new League\OAuth2\Server\Util\Request(array(), $_POST);
+        $a->setRequest($request);
+
+        $a->issueAccessToken(array(
+            'grant_type'    =>  'password',
+            'client_id' =>  1234,
+            'client_secret' =>  ''
         ));
     }
 

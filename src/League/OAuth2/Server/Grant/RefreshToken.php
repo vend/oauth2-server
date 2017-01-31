@@ -102,11 +102,11 @@ class RefreshToken implements GrantTypeInterface
         // Get the required params
         $authParams = $this->authServer->getParam(array('client_id', 'client_secret', 'refresh_token', 'scope'), 'post', $inputParams);
 
-        if (is_null($authParams['client_id'])) {
+        if (empty($authParams['client_id'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'client_id'), 0);
         }
 
-        if (is_null($authParams['client_secret'])) {
+        if (empty($authParams['client_secret'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'client_secret'), 0);
         }
 
@@ -119,7 +119,7 @@ class RefreshToken implements GrantTypeInterface
 
         $authParams['client_details'] = $clientDetails;
 
-        if (is_null($authParams['refresh_token'])) {
+        if (empty($authParams['refresh_token'])) {
             throw new Exception\ClientException(sprintf($this->authServer->getExceptionMessage('invalid_request'), 'refresh_token'), 0);
         }
 

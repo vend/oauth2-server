@@ -91,6 +91,24 @@ class Refresh_Token_test extends PHPUnit_Framework_TestCase
      * @expectedException        League\OAuth2\Server\Exception\ClientException
      * @expectedExceptionCode    0
      */
+    public function test_issueAccessToken_refreshTokenGrant_emptyClientId()
+    {
+        $a = $this->returnDefault();
+        $a->addGrantType(new League\OAuth2\Server\Grant\RefreshToken());
+
+        $request = new League\OAuth2\Server\Util\Request(array(), $_POST);
+        $a->setRequest($request);
+
+        $a->issueAccessToken(array(
+            'grant_type'    =>  'refresh_token',
+            'client_id' =>  ''
+        ));
+    }
+
+    /**
+     * @expectedException        League\OAuth2\Server\Exception\ClientException
+     * @expectedExceptionCode    0
+     */
     public function test_issueAccessToken_refreshTokenGrant_missingClientSecret()
     {
         $a = $this->returnDefault();
@@ -102,6 +120,25 @@ class Refresh_Token_test extends PHPUnit_Framework_TestCase
         $a->issueAccessToken(array(
             'grant_type'    =>  'refresh_token',
             'client_id' =>  1234
+        ));
+    }
+
+    /**
+     * @expectedException        League\OAuth2\Server\Exception\ClientException
+     * @expectedExceptionCode    0
+     */
+    public function test_issueAccessToken_refreshTokenGrant_emptyClientSecret()
+    {
+        $a = $this->returnDefault();
+        $a->addGrantType(new League\OAuth2\Server\Grant\RefreshToken());
+
+        $request = new League\OAuth2\Server\Util\Request(array(), $_POST);
+        $a->setRequest($request);
+
+        $a->issueAccessToken(array(
+            'grant_type'    =>  'refresh_token',
+            'client_id' =>  1234,
+            'client_secret' =>  ''
         ));
     }
 
@@ -144,6 +181,28 @@ class Refresh_Token_test extends PHPUnit_Framework_TestCase
             'grant_type'    =>  'refresh_token',
             'client_id' =>  1234,
             'client_secret' =>  5678
+        ));
+    }
+
+    /**
+     * @expectedException        League\OAuth2\Server\Exception\ClientException
+     * @expectedExceptionCode    0
+     */
+    public function test_issueAccessToken_refreshTokenGrant_emptyRefreshToken()
+    {
+        $this->client->shouldReceive('getClient')->andReturn(array());
+
+        $a = $this->returnDefault();
+        $a->addGrantType(new League\OAuth2\Server\Grant\RefreshToken());
+
+        $request = new League\OAuth2\Server\Util\Request(array(), $_POST);
+        $a->setRequest($request);
+
+        $a->issueAccessToken(array(
+            'grant_type'    =>  'refresh_token',
+            'client_id' =>  1234,
+            'client_secret' =>  5678,
+            'refresh_token' =>  ''
         ));
     }
 

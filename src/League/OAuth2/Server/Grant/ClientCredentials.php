@@ -88,11 +88,11 @@ class ClientCredentials implements GrantTypeInterface
          // Get the required params
         $authParams = $this->authServer->getParam(array('client_id', 'client_secret'), 'post', $inputParams);
 
-        if (is_null($authParams['client_id'])) {
+        if (empty($authParams['client_id'])) {
             throw new Exception\ClientException(sprintf(Authorization::getExceptionMessage('invalid_request'), 'client_id'), 0);
         }
 
-        if (is_null($authParams['client_secret'])) {
+        if (empty($authParams['client_secret'])) {
             throw new Exception\ClientException(sprintf(Authorization::getExceptionMessage('invalid_request'), 'client_secret'), 0);
         }
 

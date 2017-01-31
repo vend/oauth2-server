@@ -66,6 +66,20 @@ class Auth_Code_Grant_Test extends PHPUnit_Framework_TestCase
      * @expectedException        League\OAuth2\Server\Exception\ClientException
      * @expectedExceptionCode    0
      */
+    public function test_checkAuthoriseParams_emptyClientId()
+    {
+        $a = $this->returnDefault();
+        $g = new League\OAuth2\Server\Grant\AuthCode();
+        $a->addGrantType($g);
+        $g->checkAuthoriseParams(array(
+            'client_id' =>  ''
+        ));
+    }
+
+    /**
+     * @expectedException        League\OAuth2\Server\Exception\ClientException
+     * @expectedExceptionCode    0
+     */
     public function test_checkAuthoriseParams_noRedirectUri()
     {
         $a = $this->returnDefault();
@@ -73,6 +87,21 @@ class Auth_Code_Grant_Test extends PHPUnit_Framework_TestCase
         $a->addGrantType($g);
         $g->checkAuthoriseParams(array(
             'client_id' =>  1234
+        ));
+    }
+
+    /**
+     * @expectedException        League\OAuth2\Server\Exception\ClientException
+     * @expectedExceptionCode    0
+     */
+    public function test_checkAuthoriseParams_emptyRedirectUri()
+    {
+        $a = $this->returnDefault();
+        $g = new League\OAuth2\Server\Grant\AuthCode();
+        $a->addGrantType($g);
+        $g->checkAuthoriseParams(array(
+            'client_id' =>  1234,
+            'redirect_uri'  =>  ''
         ));
     }
 
@@ -129,6 +158,29 @@ class Auth_Code_Grant_Test extends PHPUnit_Framework_TestCase
         $g->checkAuthoriseParams(array(
             'client_id' =>  1234,
             'redirect_uri'  =>  'http://foo/redirect'
+        ));
+    }
+
+    /**
+     * @expectedException        League\OAuth2\Server\Exception\ClientException
+     * @expectedExceptionCode    0
+     */
+    public function test_checkAuthoriseParams_emptyResponseType()
+    {
+        $this->client->shouldReceive('getClient')->andReturn(array(
+            'client_id' =>  1234,
+            'client_secret' =>  5678,
+            'redirect_uri'  =>  'http://foo/redirect',
+            'name'  =>  'Example Client'
+        ));
+
+        $a = $this->returnDefault();
+        $g = new League\OAuth2\Server\Grant\AuthCode();
+        $a->addGrantType($g);
+        $g->checkAuthoriseParams(array(
+            'client_id' =>  1234,
+            'redirect_uri'  =>  'http://foo/redirect',
+            'response_type' =>  ''
         ));
     }
 
